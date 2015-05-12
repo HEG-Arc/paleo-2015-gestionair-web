@@ -65,6 +65,8 @@ class Answer(models.Model):
                                        help_text=_("The pick up time of the call"))
     hangup_time = models.DateTimeField(verbose_name=_("hang up time"),
                                        help_text=_("The hang up time of the call"))
+    correct = models.IntegerField(verbose_name=_("correct answer"), null=True, blank=True,
+                                  help_text=_("This indicates if the answer is correct (1), false (0) or if there is no answer (NULL)"))
     # Foreign keys
     player = models.ForeignKey('Player', verbose_name=_('player'), related_name=_('answers'),
                                help_text=_("The player who answered the question"))
