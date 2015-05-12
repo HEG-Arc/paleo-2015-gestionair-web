@@ -58,8 +58,6 @@ class Answer(models.Model):
                                    help_text=_("The sequence of the questions for a player"))
     answer = models.IntegerField(verbose_name=_("answer given"),
                                  help_text=_("The answer key that was pressed during the game"))
-    phone = models.IntegerField(verbose_name=_("phone number"),
-                                help_text=_("The identifier of the phone used for this answer"))
     pickup_time = models.DateTimeField(verbose_name=_("pick up time"),
                                        help_text=_("The pick up time of the call"))
     hangup_time = models.DateTimeField(verbose_name=_("hang up time"),
@@ -69,6 +67,8 @@ class Answer(models.Model):
                                help_text=_("The player who answered the question"))
     question = models.ForeignKey('Translation', verbose_name=_('question'), related_name=_('answers'),
                                  help_text=_("The question/language which was answered"))
+    phone = models.ForeignKey('Phone', verbose_name=_("phone"), related_name=_('answers'),
+                              help_text=_("The identifier of the phone used for this answer"))
 
 
 class Question(models.Model):
@@ -107,3 +107,14 @@ class Department(models.Model):
                                    help_text=_("The description of the department"))
     audio_file = models.FileField(verbose_name=_("audio file"), upload_to='departments',
                                   help_text=_("The MP3 file of the department's description"))
+
+
+class Phone(models.Model):
+    number = models.IntegerField(verbose_name=_("phone number"),
+                                 help_text=_("The call number of the phone"))
+    position_x = models.FloatField(verbose_name=_("x position"), null=True, blank=True,
+                                   help_text=_("The position on the horizontal axis"))
+    position_y = models.FloatField(verbose_name=_("y position"), null=True, blank=True,
+                                   help_text=_("The position on the vertical axis"))
+    orientation = models.IntegerField(verbose_name=_("orientation"), default=0, blank=True,
+                                      help_text=_("The orientation of the phone in degrees"))
