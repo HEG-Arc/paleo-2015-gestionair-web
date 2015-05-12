@@ -34,7 +34,7 @@ from django.utils.translation import ugettext_lazy as _
 # TODO: Should we internationalize the models?
 
 class Game(models.Model):
-    code = models.CharField(verbose_name=_("code"), max_length=15, unique=True,
+    code = models.CharField(verbose_name=_("code"), max_length=15, unique=True, primary_key=True,
                             help_text=_("The identification code of the game"))
     team = models.CharField(verbose_name=_("team"), max_length=100,
                             help_text=_("The name of the team (this field is not unique!)"))
@@ -75,7 +75,7 @@ class Answer(models.Model):
 
 
 class Question(models.Model):
-    number = models.IntegerField(verbose_name=_("question number"), unique=True,
+    number = models.IntegerField(verbose_name=_("question number"), unique=True, primary_key=True,
                                  help_text=_("The number of the question"))
     # Foreign keys
     department = models.ForeignKey('Department', verbose_name=_('department'), related_name=_('questions'),
@@ -96,7 +96,7 @@ class Translation(models.Model):
 
 class Language(models.Model):
     # TODO: Should we translate the names of the languages in DE and EN?
-    code = models.CharField(verbose_name=_("language code"), max_length=2, unique=True,
+    code = models.CharField(verbose_name=_("language code"), max_length=2, unique=True, primary_key=True,
                             help_text=_("The ISO 3166-1 code of the language"))
     language = models.CharField(verbose_name=_("language name"), max_length=100,
                                 help_text=_("The french name of the language"))
@@ -106,7 +106,7 @@ class Language(models.Model):
 
 class Department(models.Model):
     # TODO: We also have the description in DE and EN!
-    number = models.IntegerField(verbose_name=_("department number"), unique=True,
+    number = models.IntegerField(verbose_name=_("department number"), unique=True, primary_key=True,
                                  help_text=_("The number of the department"))
     name = models.CharField(verbose_name=_("department"), max_length=50,
                             help_text=_("The name of the department"))
@@ -117,7 +117,7 @@ class Department(models.Model):
 
 
 class Phone(models.Model):
-    number = models.IntegerField(verbose_name=_("phone number"),
+    number = models.IntegerField(verbose_name=_("phone number"), primary_key=True,
                                  help_text=_("The call number of the phone"))
     position_x = models.FloatField(verbose_name=_("x position"), null=True, blank=True,
                                    help_text=_("The position on the horizontal axis"))
