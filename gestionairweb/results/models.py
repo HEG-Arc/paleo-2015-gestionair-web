@@ -27,10 +27,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # Third-party app imports
-from django_countries.fields import CountryField
 
 # paleo2015 imports
 
+
+# TODO: Should we internationalize the models?
 
 class Game(models.Model):
     code = models.CharField(verbose_name=_("code"), max_length=15, unique=True,
@@ -41,6 +42,8 @@ class Game(models.Model):
                                       help_text=_("The start time of the game"))
     end_time = models.DateTimeField(verbose_name=_("end time"),
                                     help_text=_("The end time of the game"))
+    canceled = models.BooleanField(verbose_name=_("canceled"), default=False,
+                                   help_text=_("A game is canceled in the case of a no-show (time slot + grace period"))
 
 
 class Player(models.Model):
@@ -72,15 +75,15 @@ class Answer(models.Model):
 
 
 class Question(models.Model):
-    text = models.TextField(verbose_name=_("question"),
-                            help_text=_("The french text of the question"))
+    number = models.IntegerField(verbose_name=_("question number"), unique=True,
+                                 help_text=_("The number of the question"))
     # Foreign keys
     department = models.ForeignKey('Department', verbose_name=_('department'), related_name=_('questions'),
                                    help_text=_("The department concerned by the question (aka right answer)"))
 
 
 class Translation(models.Model):
-    text = models.TextField(verbose_name=_("translated question"), null=True,
+    text = models.TextField(verbose_name=_("translated question"), null=True, blank=True,
                             help_text=_("The translated text of the question"))
     audio_file = models.FileField(verbose_name=_("audio file"), upload_to='questions',
                                   help_text=_("The MP3 file of the question"))
@@ -92,7 +95,8 @@ class Translation(models.Model):
 
 
 class Language(models.Model):
-    code = models.CharField(verbose_name=_("language code"), max_length=2,
+    # TODO: Should we translate the names of the languages in DE and EN?
+    code = models.CharField(verbose_name=_("language code"), max_length=2, unique=True,
                             help_text=_("The ISO 3166-1 code of the language"))
     language = models.CharField(verbose_name=_("language name"), max_length=100,
                                 help_text=_("The french name of the language"))
@@ -101,6 +105,9 @@ class Language(models.Model):
 
 
 class Department(models.Model):
+    # TODO: We also have the description in DE and EN!
+    number = models.IntegerField(verbose_name=_("department number"), unique=True,
+                                 help_text=_("The number of the department"))
     name = models.CharField(verbose_name=_("department"), max_length=50,
                             help_text=_("The name of the department"))
     description = models.TextField(verbose_name=_("description"),
