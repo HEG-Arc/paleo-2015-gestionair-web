@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
-APPS_DIR = ROOT_DIR.path('webgestionair')
+APPS_DIR = ROOT_DIR.path('gestionairweb')
 
 env = environ.Env()
 
@@ -43,8 +43,8 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'webgestionair.users',  # custom users app
-    'webgestionair.results',
+    'gestionairweb.users',  # custom users app
+    'gestionairweb.results',
     # Your stuff: custom apps go here
 )
 
@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = (
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 MIGRATION_MODULES = {
-    'sites': 'webgestionair.contrib.sites.migrations'
+    'sites': 'gestionairweb.contrib.sites.migrations'
 }
 
 # DEBUG
@@ -103,7 +103,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="postgres://webgestionair:toto@localhost/webgestionair"),
+    'default': env.db("DATABASE_URL", default="postgres://gestionairweb:toto@localhost/gestionairweb"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
