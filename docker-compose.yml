@@ -1,0 +1,16 @@
+db:
+  image: postgres:9.4
+  env_file: .env
+web:
+  build: .
+  env_file: .env
+  environment:
+    - PYTHONUNBUFFERED=1
+  command: bash -c "sleep 3 && python manage.py runserver_plus 0.0.0.0:8080" 
+  working_dir: /app
+  volumes:
+    - .:/app
+  ports:
+    - "8080:8080"
+  links:
+    - db
