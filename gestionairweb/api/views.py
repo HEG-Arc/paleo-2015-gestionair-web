@@ -1,4 +1,4 @@
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Sum
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -56,7 +56,8 @@ class GameViewSet(viewsets.ViewSet):
                         start_time__month=date[1],
                         start_time__day=date[2])\
                 .annotate(num_players=Count('players'),
-                          score_max=Max('players__score'))\
+                          score_max=Max('players__score'),
+                          score_total=Sum('players__score'))\
                 .order_by('start_time')
 
             return Response(GameSerializer(games, many=True).data)

@@ -63,6 +63,7 @@ class GameDetailSerializer(serializers.ModelSerializer):
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = ('id', 'num_players', 'score_max', 'code', 'team', 'start_time')
+        fields = ('id', 'num_players', 'score_max', 'score_total', 'code', 'team', 'start_time')
     num_players = serializers.IntegerField(required=False, read_only=True)
     score_max = serializers.IntegerField(required=False, read_only=True)
+    score_total = serializers.IntegerField(required=False, read_only=True)
