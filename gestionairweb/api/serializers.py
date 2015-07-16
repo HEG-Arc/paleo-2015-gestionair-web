@@ -18,14 +18,17 @@ class DepartmentSerializer(serializers.ModelSerializer):
         model = Department
 
 
+class TranslationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Translation
+        fields = ('language', 'text')
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
 
+    translations = TranslationSerializer(many=True, read_only=True)
 
-class TranslationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Translation
 
 
 class PlayerAnswerSerializer(serializers.ModelSerializer):
