@@ -1,12 +1,14 @@
 db:
-  image: postgres:9.4
+  build: docker/postgres
   env_file: .env
+  ports:
+      - "5434:5432"
 web:
   build: .
   env_file: .env
   environment:
     - PYTHONUNBUFFERED=1
-  command: bash -c "while true; do sleep 3; python manage.py runserver_plus 0.0.0.0:8080; done" 
+  command: bash -c "while true; do sleep 3; python manage.py runserver 0.0.0.0:8080; done" 
   working_dir: /app
   volumes:
     - .:/app
@@ -14,3 +16,14 @@ web:
     - "8081:8080"
   links:
     - db
+#angular:
+#  build: docker/gestionairtv
+nginx:
+  build: docker/nginx
+  volumes_from:
+     #- angular
+     - web
+  ports:
+    - "81:80"
+  links:
+    - web:web
