@@ -14,9 +14,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import environ
 env = environ.Env()
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+environ.Env.read_env(BASE_DIR + '/.env') # reading .env file
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -25,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_+rso1#3$0(@hlvg=%2j(_ly#y0a@qqi)2f(g91_4@rb3me+!#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
