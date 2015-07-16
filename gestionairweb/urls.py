@@ -16,6 +16,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from rest_framework import routers
+from gestionairweb.api import views
+router = routers.DefaultRouter(trailing_slash=False)
+
+router.register(r'game', views.GameViewSet)
+router.register(r'languages', views.LanguageViewSet)
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
