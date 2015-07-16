@@ -23,7 +23,7 @@ class QuestionViewSet(viewsets.ViewSet):
     def list(self, request):
         return Response('list not implemented use with an id')
 
-    def retrieve(self, request, pk=None,format=None):
+    def retrieve(self, request, pk=None, format=None):
         question = QuestionSerializer(self.queryset.get(number=pk)).data
         question['translations'] = [(x['language'], x['text']) for x in question['translations']]
         return Response(question)
