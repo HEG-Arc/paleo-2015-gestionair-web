@@ -1,8 +1,11 @@
+from django.db.models import Count, Max
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from gestionairweb.callcenter.models import Language, Game, Question, Department
-from gestionairweb.api.serializers import LanguageSerializer, GameSerializer, DepartmentSerializer, QuestionSerializer
+from gestionairweb.api.serializers import LanguageSerializer, GameSerializer,\
+    DepartmentSerializer, QuestionSerializer, GameDetailSerializer
 import random
 
 
@@ -35,7 +38,8 @@ class QuestionViewSet(viewsets.ViewSet):
         question = random.choice(questions_list)
         ret['next'] = QuestionSerializer(question).data
         if 'answer' in request.data and 'id' in request.data:
-            ret['correct'] = Question.objects.get(number=request.data['id']).department.number == request.data['answer']
+            ret['correct'] = Question.objects.get(number=request.data['id'])\
+                                 .department.number == request.data['answer']
 
         return Response(ret)
 
@@ -44,8 +48,21 @@ class GameViewSet(viewsets.ViewSet):
     queryset = Game.objects.all()
 
     def list(self, request):
-        return Response('list not implemented use with an id')
+        if 'date' in request.query_params:
+            date = request.query_params['date'].split('-')
+            games = self.queryset.exclude(end_time__isnull=True,
+                                          canceled=True)\
+                .filter(start_time__year=date[0],
+                        start_time__month=date[1],
+                        start_time__day=date[2])\
+                .annotate(num_players=Count('players'),
+                          score_max=Max('players__score'))\
+                .order_by('start_time')
+
+            return Response(GameSerializer(games, many=True).data)
+        else:
+            return Response({'error': 'provide a date parameter'}, status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, pk=None,format=None):
-        game = GameSerializer(self.queryset.get(id=pk)).data
+        game = GameDetailSerializer(self.queryset.get(id=pk)).data
         return Response(game)

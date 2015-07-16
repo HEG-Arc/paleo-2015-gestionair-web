@@ -23,12 +23,12 @@ class TranslationSerializer(serializers.ModelSerializer):
         model = Translation
         fields = ('language', 'text')
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
 
     translations = TranslationSerializer(many=True, read_only=True)
-
 
 
 class PlayerAnswerSerializer(serializers.ModelSerializer):
@@ -53,8 +53,16 @@ class GamePlayerSerializer(serializers.ModelSerializer):
     answers = PlayerAnswerSerializer(many=True, read_only=True)
 
 
-class GameSerializer(serializers.ModelSerializer):
+class GameDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
 
     players = GamePlayerSerializer(many=True, read_only=True)
+
+
+class GameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        fields = ('id', 'num_players', 'score_max', 'code', 'team', 'start_time')
+    num_players = serializers.IntegerField(required=False, read_only=True)
+    score_max = serializers.IntegerField(required=False, read_only=True)
