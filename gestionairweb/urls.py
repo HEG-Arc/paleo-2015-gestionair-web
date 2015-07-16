@@ -21,6 +21,7 @@ from gestionairweb.api import views
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'game', views.GameViewSet)
+router.register(r'departments', views.DepartmentViewSet)
 router.register(r'languages', views.LanguageViewSet)
 
 urlpatterns = [

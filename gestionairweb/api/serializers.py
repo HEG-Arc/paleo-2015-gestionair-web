@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from gestionairweb.callcenter.models import Language, Game, Player, Answer, Question, Translation
+from gestionairweb.callcenter.models import Language, Game, Player, Answer, Question, Translation, Department
 from gestionairweb import settings
+
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +11,11 @@ class LanguageSerializer(serializers.ModelSerializer):
 
     def get_flag(self, obj):
         return '%s%s' % (settings.STATIC_URL, obj.flag)
+
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
 
 
 class QuestionSerializer(serializers.ModelSerializer):

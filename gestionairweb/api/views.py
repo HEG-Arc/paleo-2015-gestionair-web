@@ -1,9 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from gestionairweb.callcenter.models import Language, Game, Player
-from gestionairweb.api.serializers import LanguageSerializer, GameSerializer, GamePlayerSerializer
-# Create your views here.
+from gestionairweb.callcenter.models import Language, Game, Player, Department
+from gestionairweb.api.serializers import LanguageSerializer, GameSerializer, GamePlayerSerializer, DepartmentSerializer
 
 
 class LanguageViewSet(viewsets.ModelViewSet):
@@ -11,9 +10,9 @@ class LanguageViewSet(viewsets.ModelViewSet):
     serializer_class = LanguageSerializer
 
 
-class PlayerViewSet(viewsets.ModelViewSet):
-    queryset = Player.objects.all()
-    serializer_class = GamePlayerSerializer
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
 
 
 class GameViewSet(viewsets.ViewSet):
