@@ -27,7 +27,7 @@ class TranslationSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-
+        fields = ('number', 'translations')
     translations = TranslationSerializer(many=True, read_only=True)
 
 
