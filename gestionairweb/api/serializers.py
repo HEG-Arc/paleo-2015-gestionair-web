@@ -42,7 +42,7 @@ class PlayerAnswerSerializer(serializers.ModelSerializer):
         ret['question'] = translation.question.number
         ret['code'] = translation.language.code
         ret['duration'] = 0
-        if instance.hangup_time is not None and instance.pickup_time is not None
+        if instance.hangup_time is not None and instance.pickup_time is not None:
           ret['duration'] = (instance.hangup_time - instance.pickup_time).total_seconds()
         
         return ret
