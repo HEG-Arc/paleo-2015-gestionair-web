@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from gestionairweb.callcenter.models import Language, Game, Question, Department
+from gestionairweb.callcenter.models import Language, Game, Question, Department, Player
 from gestionairweb.api.serializers import LanguageSerializer, GameSerializer,\
     DepartmentSerializer, QuestionSerializer, GameDetailSerializer
 import random
@@ -12,6 +12,11 @@ import random
 class LanguageViewSet(viewsets.ModelViewSet):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
+
+
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = GamePlayerSerializer
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
