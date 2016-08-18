@@ -1,8 +1,6 @@
 db:
   build: docker/postgres
   env_file: .env
-  ports:
-      - "5434:5432"
 web:
   build: .
   env_file: .env
@@ -23,6 +21,8 @@ nginx:
   volumes_from:
      #- angular
      - web
+  volumes:
+    - ./docker/nginx/nginx.conf:/app/nginx.conf
   ports:
     - "81:80"
   links:
