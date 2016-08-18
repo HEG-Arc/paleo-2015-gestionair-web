@@ -25,6 +25,8 @@ router.register(r'departments', views.DepartmentViewSet)
 router.register(r'languages', views.LanguageViewSet)
 router.register(r'questions', views.QuestionViewSet)
 router.register(r'player', views.PlayerViewSet)
+router.register(r'score', views.ScoreViewSet)
+router.register(r'events', views.EventViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),

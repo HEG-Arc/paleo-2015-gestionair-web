@@ -24,7 +24,7 @@ environ.Env.read_env(BASE_DIR + '/.env') # reading .env file
 SECRET_KEY = '_+rso1#3$0(@hlvg=%2j(_ly#y0a@qqi)2f(g91_4@rb3me+!#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG',  default=False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'gestionairweb.callcenter',
+    'gestionairweb.api'
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -118,7 +119,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = env('STATIC_ROOT', default='')
+STATIC_ROOT = env('STATIC_ROOT', default='/app/static')
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

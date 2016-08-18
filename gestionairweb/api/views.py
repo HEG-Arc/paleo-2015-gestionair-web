@@ -1,12 +1,17 @@
-from django.db.models import Count, Max, Sum
+from django.db.models import Count, Max, Sum, Q
 from rest_framework import viewsets
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.decorators import list_route, permission_classes
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+
+from gestionairweb.api.models import Score, Event
 from gestionairweb.callcenter.models import Language, Game, Question, Department, Player
 from gestionairweb.api.serializers import LanguageSerializer, GameSerializer,\
-    DepartmentSerializer, QuestionSerializer, GameDetailSerializer
+    DepartmentSerializer, QuestionSerializer, GameDetailSerializer, GamePlayerSerializer, ScoreSerializer, \
+    EventSerializer
 import random
+import datetime
 
 
 class LanguageViewSet(viewsets.ModelViewSet):
@@ -72,3 +77,26 @@ class GameViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None,format=None):
         game = GameDetailSerializer(self.queryset.get(id=pk)).data
         return Response(game)
+
+
+class ScoreViewSet(viewsets.ModelViewSet):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+
+    # protect easy download of full scores
+    def get_permissions(self):
+        if self.action in ('list',):
+            self.permission_classes = [IsAdminUser, ]
+        return super(self.__class__, self).get_permissions()
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+    @list_route(methods=['GET'], url_path='upcoming')
+    def upcoming(self, request):
+        now = datetime.datetime.now()
+        events = self.queryset.exclude(Q(end_date__lt=now) | Q(start_date__lt=now, end_date__isnull=True))\
+            .order_by('start_date')
+        return Response(EventSerializer(events, many=True).data)

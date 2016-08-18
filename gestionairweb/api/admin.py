@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import Event, Score
 
-# Register your models here.
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Score)
+class ScoreAdmin(admin.ModelAdmin):
+    pass
