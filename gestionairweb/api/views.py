@@ -30,9 +30,19 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     serializer_class = DepartmentSerializer
 
 
+from rest_framework.authentication import SessionAuthentication
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
+
+
 class QuestionViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
     queryset = Question.objects.all()
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def list(self, request):
         return Response('list not implemented use with an id')
