@@ -12,6 +12,7 @@ from gestionairweb.api.serializers import LanguageSerializer, GameSerializer,\
     EventSerializer
 import random
 import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 
 class LanguageViewSet(viewsets.ModelViewSet):
