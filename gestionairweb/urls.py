@@ -30,6 +30,7 @@ router.register(r'events', views.EventViewSet)
 router.register(r'stats', views.StatisticViewSet)
 
 urlpatterns = [
+    url(r'^api/wkepwoke30e9iwqdiqd', views.send_stats),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

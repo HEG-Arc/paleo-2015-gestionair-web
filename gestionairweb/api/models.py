@@ -30,5 +30,5 @@ class Statistic(models.Model):
     stats = JSONField()
 
     def __str__(self):
-        return u'%s-%s-%s' % (self.event_name, stats_date, creation)
+        return u'%s-%s-%s' % (self.event_name, self.stats_date, self.creation)
 

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.db.models import Count, Max, Sum, Q
 from rest_framework import viewsets
 from rest_framework import status
@@ -14,6 +15,9 @@ import random
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.utils import timezone
 
 class LanguageViewSet(viewsets.ModelViewSet):
     queryset = Language.objects.all()
@@ -111,6 +115,17 @@ class StatisticViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminUser, ]
         return super(self.__class__, self).get_permissions()
 
+    def list(self, request):
+        queryset = Statistic.objects.values('event_code', 'event_name', 'stats_date').distinct().order_by('stats_date')
+        return Response(queryset)
+
+    def retrieve(self, request, pk=None):
+        stats_list = Statistic.objects.filter(stats_date=pk).order_by('-creation')
+        if len(stats_list) > 0:
+            serializer = StatisticSerializer(stats_list[0])
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'no statistic for the choosen date'}, status=status.HTTP_404_NOT_FOUND)
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
@@ -122,3 +137,18 @@ class EventViewSet(viewsets.ModelViewSet):
         events = self.queryset.exclude(Q(end_date__lt=now) | Q(start_date__lt=now, end_date__isnull=True))\
             .order_by('start_date')
         return Response(EventSerializer(events, many=True).data)
+
+def send_stats(request):
+    # generate the PDF file
+    import pdfkit
+    pdf = pdfkit.from_url('http://127.0.0.1/', False)
+    # send the e-mails
+    email = EmailMessage(
+        'Statistiques du %s' % timezone.now().strftime('%d.%m.%Y'),
+        'Les statistiques de la journées sont jointes à cet e-mail.',
+        'paleo@gestionair.ch',
+        ['cedric@gaspoz-fleiner.com','boris.fritscher@gmail.com']
+    )
+    email.attach("Gestionair-Statistiques-%s.pdf" % timezone.now().strftime('%d.%m.%Y'), pdf, "application/pdf")
+    email.send(fail_silently=False)
+    return HttpResponse('OK')
