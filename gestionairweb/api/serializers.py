@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from gestionairweb.callcenter.models import Language, Game, Player, Answer, Question, Translation, Department
 from gestionairweb import settings
-from .models import Score, Event
+from .models import Score, Event, Statistic
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -81,3 +81,8 @@ class ScoreSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
+
+
+class StatisticSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Statistic

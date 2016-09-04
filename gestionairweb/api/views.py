@@ -5,11 +5,11 @@ from rest_framework.decorators import list_route, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
-from gestionairweb.api.models import Score, Event
+from gestionairweb.api.models import Score, Event, Statistic
 from gestionairweb.callcenter.models import Language, Game, Question, Department, Player
 from gestionairweb.api.serializers import LanguageSerializer, GameSerializer,\
     DepartmentSerializer, QuestionSerializer, GameDetailSerializer, GamePlayerSerializer, ScoreSerializer, \
-    EventSerializer
+    EventSerializer, StatisticSerializer
 import random
 import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -93,6 +93,17 @@ class GameViewSet(viewsets.ViewSet):
 class ScoreViewSet(viewsets.ModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
+
+    # protect easy download of full scores
+    def get_permissions(self):
+        if self.action in ('list',):
+            self.permission_classes = [IsAdminUser, ]
+        return super(self.__class__, self).get_permissions()
+
+
+class StatisticViewSet(viewsets.ModelViewSet):
+    queryset = Statistic.objects.all()
+    serializer_class = StatisticSerializer
 
     # protect easy download of full scores
     def get_permissions(self):
